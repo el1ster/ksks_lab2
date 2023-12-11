@@ -4,7 +4,8 @@ import threading
 
 
 def display_received_text(text):
-    text_area.insert(tk.END, text + "\n")
+    received_text_2 = "Done: " + text + "\n"
+    return received_text_2
 
 
 def receive_data():
@@ -67,9 +68,10 @@ def receive_data():
         if command:
             try:
                 eval(command)
-                display_received_text(command)
+                text_area.insert(tk.END, display_received_text(command))
             except Exception as e:
                 print(f"Помилка виконання команди: {e}")
+                text_area.insert(tk.END, e)
         else:
             print("Помилка розбору команди")
         root.update()
@@ -94,7 +96,7 @@ def main():
 
     # Запуск функції отримання команд у окремому потоці
     receive_thread = threading.Thread(target=receive_data)
-    receive_thread.daemon = True  # Помічаємо потік як фоновий, щоб він завершився при закритті програми
+    receive_thread.daemon = True
     receive_thread.start()
 
     root.mainloop()
